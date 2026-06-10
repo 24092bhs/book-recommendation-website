@@ -4,41 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recommend Me A Book</title>
-</head>
-<body>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <section class="hero-image">
+        <h1 class="hero-text">
+            Recommend Me A Book
+        </h1>
+    </section>
+    <div class="page-content">
+        <div class="form-container">
+            <h3>Add a Book You Loved</h3>
+            <form action="/add" method="POST">
+                <div class="form-group">
+                    <label for="title">Book Title:</label>
+                    <input type="text" id="title" name="title" required placeholder="e.g., Dune">
+                </div>
+                <div class="form-group">
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" name="author" required placeholder="e.g., Frank Herbert">
+                </div>
+                <div class="form-group">
+                    <label for="notes">Why did you like it?</label>
+                    <textarea id="notes" name="notes" rows="3" required placeholder="e.g., Incredible world-building and deep political intrigue..."></textarea>
+                </div>
+                <button type="submit">Save Book to Database</button>
+            </form>
+        </div>
 
-    <h1>Recommend Me A Book</h1>
-<!-- a container that holds the input boxes -->
-<!-- needs to be reworked so that I know how it works -->
-    <div class="form-container">
-        <h3>Add a Book You Loved</h3>
-        <form action="/add" method="POST">
-            <div class="form-group">
-                <label for="title">Book Title:</label>
-                <input type="text" id="title" name="title" required placeholder="e.g., Dune">
+        {% if recommendations %}
+        <div class="recommendations-container">
+            <h2>Recommend Me My Book!!</h2>
+            <div>
+                {{ recommendations | safe }}
             </div>
-            <div class="form-group">
-                <label for="author">Author:</label>
-                <input type="text" id="author" name="author" required placeholder="e.g., Frank Herbert">
-            </div>
-            <div class="form-group">
-                <label for="notes">Why did you like it?</label>
-                <textarea id="notes" name="notes" rows="3" required placeholder="e.g., Incredible world-building and deep political intrigue..."></textarea>
-            </div>
-            <!-- button section to submit everything -->
-            <button type="submit">Save Book to Database</button>
-        </form>
-    </div>
+        </div>
+        {% endif %}
 
-    <h2>My Reading History</h2>
-    <div id="book-list">
-        <div class="book-card">
-            <h3>Sample Book Title</h3>
-            <p><strong>Author:</strong> Author Name</p>
-            <p><em>"This is a placeholder showing where your notes will appear once the database is linked!"</em></p>
+        <a href="/recommend" class="rec-btn">Recommend Me Some Books!</a>
+
+        <h2>My Reading History</h2>
+        <div id="book-list">
+            {% for book in books %}
+                <div class="book-card">
+                    <h3>📚 {{ book['title'] }}</h3>
+                    <p><strong>Author:</strong> {{ book['author'] }}</p>
+                    <p><em>"{{ book['notes'] }}"</em></p>
+                </div>
+            {% else %}
+                <p style="text-align: center; color: #7f8c8d;">Your reading list is empty. Add your first book above!</p>
+            {% endfor %}
         </div>
     </div>
 </body>

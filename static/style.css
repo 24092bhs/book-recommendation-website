@@ -1,16 +1,36 @@
 /* needs to be fixed! */
+.hero-image {
+    background-image: url("images/darkred.png");
+    height: 352px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-text {
+    color: white;
+    font-size: 4rem;
+    text-align: center;
+    margin: 0;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: rgb(245, 238, 224);
-    color: rgb(62, 43, 33);
+    background-color: rgb(247, 241, 227);
+    color: rgb(54, 43, 40);
+    margin: 0;
+}
+
+.page-content {
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
 }
-h1 {
-    text-align: center;
-    color: rgb(62, 43, 33);
-}
+
 .form-container {
     background: white;
     padding: 20px;
@@ -34,7 +54,7 @@ input[type="text"], textarea {
     box-sizing: border-box;
 }
 button {
-    background-color: rgb(184, 102, 38);
+    background-color: rgb(141, 46, 46);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -44,13 +64,40 @@ button {
     width: 100%;
 }
 button:hover {
-    background-color: rgb(184, 102, 38);
+    background-color: rgb(141, 46, 46);
 }
 .book-card {
     background: white;
     padding: 15px;
-    border-left: 5px solid #2ecc71;
+    border-left: 5px solid rgb(141, 46, 46);
     border-radius: 4px;
     margin-bottom: 15px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+
+.recommendations-container {
+            background: #e8f4fd;
+            padding: 20px;
+            border-left: 5px solid rgb(190, 143, 83);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .rec-btn {
+            background-color: rgb(141, 46, 46);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        .rec-btn:hover {
+            background-color: rgb(141, 46, 46);
+        }
