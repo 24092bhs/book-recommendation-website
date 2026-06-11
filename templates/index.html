@@ -7,54 +7,138 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <section class="hero-image">
-        <h1 class="hero-text">
-            Recommend Me A Book
-        </h1>
-    </section>
-    <div class="page-content">
-        <div class="form-container">
-            <h3>Add a Book You Loved</h3>
-            <form action="/add" method="POST">
-                <div class="form-group">
-                    <label for="title">Book Title:</label>
-                    <input type="text" id="title" name="title" required placeholder="e.g., Dune">
-                </div>
-                <div class="form-group">
-                    <label for="author">Author:</label>
-                    <input type="text" id="author" name="author" required placeholder="e.g., Frank Herbert">
-                </div>
-                <div class="form-group">
-                    <label for="notes">Why did you like it?</label>
-                    <textarea id="notes" name="notes" rows="3" required placeholder="e.g., Incredible world-building and deep political intrigue..."></textarea>
-                </div>
-                <button type="submit">Save Book to Database</button>
-            </form>
-        </div>
 
-        {% if recommendations %}
-        <div class="recommendations-container">
-            <h2>Recommend Me My Book!!</h2>
-            <div>
-                {{ recommendations | safe }}
+    <section class="hero-image">
+        <h1 class="hero-text">Recommend Me A Book</h1>
+    </section>
+
+    <div class="page-container">
+        
+        <aside class="sidebar">
+            <div class="card form-container">
+                <h3>Add a Book You Loved</h3>
+                <form action="/add" method="POST">
+                    <div class="form-group">
+                        <label for="title">Book Title</label>
+                        <input type="text" id="title" name="title" required placeholder="e.g., Dune">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" name="author" required placeholder="e.g., Frank Herbert">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rating">Your Rating</label>
+                        <select id="rating" name="rating" required>
+                            <option value="5">⭐⭐⭐⭐⭐ (Flawless Masterpiece)</option>
+                            <option value="4">⭐⭐⭐⭐ (Great Book)</option>
+                            <option value="3">⭐⭐⭐ (Good / Entertaining)</option>
+                            <option value="2">⭐⭐ (Mediocre / Flawed)</option>
+                            <option value="1">⭐ (Terrible / Couldn't Finish)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Why did you like it?</label>
+                        <textarea id="notes" name="notes" rows="3" required placeholder="Incredible world-building..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save to Library</button>
+                </form>
+            </div>
+
+            <a href="/recommend" class="btn btn-secondary">✨ Generate AI Suggestions</a>
+
+            {% if books %}
+            <form action="/clear" method="POST" class="confirm-required" data-message="Are you sure you want to completely clear your history? This will delete all your entries permanently.">
+                <button type="submit" class="btn btn-danger">🗑️ Clear Entire History</button>
+            </form>
+            {% endif %}
+        </aside>
+
+        <main class="main-content">
+            
+            {% if recommendations %}
+            <div class="card recommendations-container">
+                <h2>📜 Your Personalized Recommendations</h2>
+                <div class="rec-html-content">
+                    {{ recommendations | safe }}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="history-section">
+                <h2>My Reading History</h2>
+                <div id="book-list">
+                    {% for book in books %}
+                        <div class="card book-card">
+                            <div class="book-header">
+                                <div>
+                                    <h3>📚 {{ book['title'] }}</h3>
+                                    <span class="book-author">by {{ book['author'] }}</span>
+                                    
+                                    <div class="star-display">
+                                        {% for _ in range(book['rating']) %}⭐{% endfor %}
+                                    </div>
+                                </div>
+                                <form action="/delete/{{ book['id'] }}" method="POST" class="confirm-required" data-message="Are you sure you want to delete '{{ book['title'] }}'?">
+                                    <button type="submit" class="delete-icon-btn" title="Delete book">🗑️</button>
+                                </form>
+                            </div>
+                            <p class="book-notes"><em>"{{ book['notes'] }}"</em></p>
+                        </div>
+                    {% else %}
+                        <p class="empty-state">Your reading list is empty. Add your first book in the sidebar!</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>⚠️ Hold On</h3>
+            <p id="modal-message">Are you sure you want to proceed?</p>
+            <div class="modal-actions">
+                <button id="modal-cancel-btn" class="btn">Cancel</button>
+                <button id="modal-confirm-btn" class="btn">Yes, Proceed</button>
             </div>
         </div>
-        {% endif %}
-
-        <a href="/recommend" class="rec-btn">Recommend Me Some Books!</a>
-
-        <h2>My Reading History</h2>
-        <div id="book-list">
-            {% for book in books %}
-                <div class="book-card">
-                    <h3>☆彡 {{ book['title'] }}</h3>
-                    <p><strong>Author:</strong> {{ book['author'] }}</p>
-                    <p><em>"{{ book['notes'] }}"</em></p>
-                </div>
-            {% else %}
-                <p style="text-align: center; color: #7f8c8d;">Your reading list is empty. Add your first book above!</p>
-            {% endfor %}
-        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('confirm-modal');
+            const modalMessage = document.getElementById('modal-message');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            let activeForm = null;
+
+            document.querySelectorAll('.confirm-required').forEach(form => {
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    activeForm = form;
+                    const message = form.getAttribute('data-message') || "Are you sure?";
+                    modalMessage.textContent = message;
+                    modal.classList.add('active');
+                });
+            });
+
+            cancelBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+            function closeModal() {
+                modal.classList.remove('active');
+                activeForm = null;
+            }
+
+            confirmBtn.addEventListener('click', () => {
+                if (activeForm) {
+                    activeForm.submit();
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask, redirect, render_template, request
-from google import genai  # <-- 1. NEW IMPORT
+from google import genai
 
 app = Flask(__name__)
 
@@ -13,13 +13,15 @@ def get_db_connection():
 
 def init_db():
     conn = get_db_connection()
+    # UPDATED: Added rating column to the table creation schema
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS books (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             author TEXT NOT NULL,
-            notes TEXT NOT NULL
+            notes TEXT NOT NULL,
+            rating INTEGER NOT NULL DEFAULT 5
         )
     """
     )
@@ -43,25 +45,43 @@ def add_book():
     input_title = request.form["title"]
     input_author = request.form["author"]
     input_notes = request.form["notes"]
+    input_rating = int(request.form["rating"])  # <-- UPDATED: Catch the rating
 
     conn = get_db_connection()
+    # UPDATED: Inserting the rating into the database query
     conn.execute(
-        "INSERT INTO books (title, author, notes) VALUES (?, ?, ?)",
-        (input_title, input_author, input_notes),
+        "INSERT INTO books (title, author, notes, rating) VALUES (?, ?, ?, ?)",
+        (input_title, input_author, input_notes, input_rating),
     )
     conn.commit()
     conn.close()
     return redirect("/")
 
 
-# 2. NEW ROUTE: Constructing the Prompt & contacting Gemini
+@app.route("/delete/<int:book_id>", methods=["POST"])
+def delete_book(book_id):
+    conn = get_db_connection()
+    conn.execute("DELETE FROM books WHERE id = ?", (book_id,))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+
+
+@app.route("/clear", methods=["POST"])
+def clear_history():
+    conn = get_db_connection()
+    conn.execute("DELETE FROM books")
+    conn.commit()
+    conn.close()
+    return redirect("/")
+
+
 @app.route("/recommend")
 def recommend_books():
     conn = get_db_connection()
     all_books = conn.execute("SELECT * FROM books").fetchall()
     conn.close()
 
-    # If the user hasn't added any books yet, don't waste an API call
     if not all_books:
         return render_template(
             "index.html",
@@ -69,21 +89,20 @@ def recommend_books():
             recommendations="<p>Please add a few books to your history first so I can analyze your taste!</p>",
         )
 
-    # 3. Constructing the dynamic Master Prompt
+    # UPDATED: Instruct the AI to care deeply about the numerical values
     master_prompt = (
-        "You are an elite literary critic. Based on my reading history and why I liked each book, "
-        "recommend 3 distinct books I should read next. "
+        "You are an elite literary critic. Based on my reading history, my 1-5 star ratings, and why I liked each book, "
+        "recommend 3 distinct books I should read next. Heavily prioritize elements from 5-star books, and treat lower-rated books with less emphasis. "
         "Format your output using clean HTML elements like <p>, <strong>, <ul>, and <li> so it integrates seamlessly into a webpage. "
         "Do NOT wrap your response in markdown code blocks (like ```html), just output the raw HTML markup text.\n\n"
         "Here is my reading history:\n"
     )
 
     for book in all_books:
-        master_prompt += f"- '{book['title']}' by {book['author']}. Why I liked it: {book['notes']}\n"
+        # UPDATED: Pushing ratings straight into the AI's training prompt context
+        master_prompt += f"- '{book['title']}' by {book['author']}. My personal rating: {book['rating']}/5 stars. Why I liked it: {book['notes']}\n"
 
-    # 4. Attempting to call the Gemini API
     try:
-        # By default, genai.Client() automatically looks for an environment variable named GEMINI_API_KEY
         client = genai.Client()
         response = client.models.generate_content(
             model="gemini-2.5-flash", contents=master_prompt
@@ -95,7 +114,6 @@ def recommend_books():
             "Make sure you have obtained a Gemini API Key and set it up in your system environment variables!</p>"
         )
 
-    # Render the home page, but this time pass the AI suggestions along
     return render_template(
         "index.html", books=all_books, recommendations=ai_analysis
     )

@@ -1,103 +1,329 @@
-/* needs to be fixed! */
+/* ==========================================================================
+   1. GLOBAL STYLES & TYPOGRAPHY
+   ========================================================================== */
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: rgb(247, 241, 227);
+    color: rgb(54, 43, 40);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: rgb(44, 33, 30);
+    margin-top: 0;
+}
+
+/* ==========================================================================
+   2. HERO BANNER
+   ========================================================================== */
 .hero-image {
     background-image: url("images/darkred.png");
-    height: 352px;
+    height: 280px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2); /* Subtle dark overlay for readability */
 }
 
 .hero-text {
     color: white;
-    font-size: 4rem;
+    font-size: 3.5rem;
+    font-weight: 700;
     text-align: center;
     margin: 0;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: rgb(247, 241, 227);
-    color: rgb(54, 43, 40);
-    margin: 0;
-}
-
-.page-content {
-    max-width: 800px;
+/* ==========================================================================
+   3. THE GRID LAYOUT (The Secret Sauce)
+   ========================================================================== */
+.page-container {
+    max-width: 1100px; /* Widened slightly to accommodate two columns comfortably */
     margin: 40px auto;
-    padding: 20px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 320px 1fr; /* Sidebar is fixed, main content takes remaining space */
+    gap: 40px;
 }
 
-.form-container {
+/* Responsive design: switches back to a single column on tablets/phones */
+@media (max-width: 850px) {
+    .page-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* ==========================================================================
+   4. REUSABLE CARDS & CONTAINERS
+   ========================================================================== */
+.card {
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-.form-group {
-    margin-bottom: 15px;
-}
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-input[type="text"], textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(54, 43, 40, 0.08);
+    margin-bottom: 24px;
     box-sizing: border-box;
 }
-button {
-    background-color: rgb(141, 46, 46);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-}
-button:hover {
-    background-color: rgb(141, 46, 46);
-}
-.book-card {
-    background: white;
-    padding: 15px;
-    border-left: 5px solid rgb(141, 46, 46);
-    border-radius: 4px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 18px;
 }
 
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1c7bd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: inherit;
+    background-color: #faf9f6;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: rgb(141, 46, 46);
+    box-shadow: 0 0 0 3px rgba(141, 46, 46, 0.15);
+}
+
+/* ==========================================================================
+   5. BUTTONS & INTERACTION
+   ========================================================================== */
+.btn {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background-color: rgb(141, 46, 46);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: rgb(110, 35, 35);
+}
+
+.btn-secondary {
+    background-color: rgb(64, 53, 50);
+    color: white;
+    margin-top: -10px; /* Snugs it closer up to the card above */
+}
+
+.btn-secondary:hover {
+    background-color: rgb(44, 33, 30);
+}
+
+/* ==========================================================================
+   6. OUTPUT COMPONENTS
+   ========================================================================== */
+/* Custom AI Container - Now matching your theme */
 .recommendations-container {
-            background: #e8f4fd;
-            padding: 20px;
-            border-left: 5px solid rgb(190, 143, 83);
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .rec-btn {
-            background-color: rgb(141, 46, 46);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
-        .rec-btn:hover {
-            background-color: rgb(141, 46, 46);
-        }
+    background: rgb(253, 250, 242); /* Softer parchment tone instead of harsh blue */
+    border-left: 6px solid rgb(190, 143, 83); /* Classic library gold accent */
+}
+
+.rec-html-content ul {
+    padding-left: 20px;
+}
+
+.rec-html-content li {
+    margin-bottom: 10px;
+}
+
+/* Reading History Cards */
+.book-card {
+    border-left: 6px solid rgb(141, 46, 46);
+}
+
+.book-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #f0eae1;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.book-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.book-author {
+    color: #7f6f6c;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.book-notes {
+    margin: 0;
+    color: #4a3e3b;
+}
+
+.empty-state {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 40px;
+    background: white;
+    border-radius: 8px;
+}
+
+/* Red warning button for clearing history */
+.btn-danger {
+    background-color: transparent;
+    color: #c0392b;
+    border: 1px solid #e74c3c;
+}
+
+.btn-danger:hover {
+    background-color: #fff0f0;
+    color: #962d22;
+}
+
+/* Minimalist trash icon button inside the book header */
+.delete-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    opacity: 0.4;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+.delete-icon-btn:hover {
+    opacity: 1;
+    background-color: rgba(192, 57, 43, 0.1);
+}
+
+/* ==========================================================================
+   7. CUSTOM CONFIRMATION MODAL STYLING
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 33, 30, 0.6); /* Translucent dark brown overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensures it sits above all other website elements */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+/* Added by JavaScript when form is clicked */
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(54, 43, 40, 0.25);
+    text-align: center;
+    transform: scale(0.85);
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Slight bounce animation */
+}
+
+.modal-overlay.active .modal-card {
+    transform: scale(1);
+}
+
+.modal-card h3 {
+    color: rgb(141, 46, 46);
+    margin-bottom: 12px;
+    font-size: 1.5rem;
+}
+
+#modal-message {
+    color: rgb(74, 63, 60);
+    margin-bottom: 24px;
+    font-size: 1.05rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* Custom layout behaviors for popup option buttons */
+#modal-cancel-btn {
+    background-color: #f0eae1;
+    color: rgb(54, 43, 40);
+}
+
+#modal-cancel-btn:hover {
+    background-color: #e2d9cd;
+}
+
+#modal-confirm-btn {
+    background-color: rgb(141, 46, 46);
+    color: white;
+}
+
+#modal-confirm-btn:hover {
+    background-color: rgb(110, 35, 35);
+}
+
+/* Styling for the HTML dropdown selection menu */
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1c7bd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: inherit;
+    background-color: #faf9f6;
+    color: rgb(54, 43, 40);
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: rgb(141, 46, 46);
+    box-shadow: 0 0 0 3px rgba(141, 46, 46, 0.15);
+}
+
+/* Margin offset for star icons on our library dashboard cards */
+.star-display {
+    margin-top: 4px;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+}
