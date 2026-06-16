@@ -28,18 +28,19 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="rating">Your Rating</label>
-                        <select id="rating" name="rating" required>
-                            <option value="5">⭐⭐⭐⭐⭐</option>
-                            <option value="4">⭐⭐⭐⭐</option>
-                            <option value="3">⭐⭐⭐</option>
-                            <option value="2">⭐⭐</option>
-                            <option value="1">⭐</option>
-                        </select>
+                        <label>Your Rating</label>
+                        <div class="star-rating" id="interactive-stars">
+                            <span class="interactive-star" data-value="1">★</span>
+                            <span class="interactive-star" data-value="2">★</span>
+                            <span class="interactive-star" data-value="3">★</span>
+                            <span class="interactive-star" data-value="4">★</span>
+                            <span class="interactive-star" data-value="5">★</span>
+                            <input type="hidden" id="rating-score" name="rating" value="5" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="notes">Why did you like it?</label>
+                        <label for="notes">What did you think of it?</label>
                         <textarea id="notes" name="notes" rows="3" required placeholder="Incredible world-building..."></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Save to Library</button>
@@ -108,6 +109,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. KEEP THIS! This is your original modal pop-up code
             const modal = document.getElementById('confirm-modal');
             const modalMessage = document.getElementById('modal-message');
             const cancelBtn = document.getElementById('modal-cancel-btn');
@@ -137,6 +140,44 @@
                     activeForm.submit();
                 }
             });
+
+
+            // 2. PASTE THIS RIGHT HERE! This is your new star rating code
+            const starsContainer = document.getElementById('interactive-stars');
+            const stars = document.querySelectorAll('.interactive-star');
+            const ratingInput = document.getElementById('rating-score');
+            let currentSelectedRating = 5; 
+
+            function paintStars(ratingValue) {
+                stars.forEach(star => {
+                    const starValue = parseInt(star.getAttribute('data-value'));
+                    if (starValue <= ratingValue) {
+                        star.classList.add('selected');
+                    } else {
+                        star.classList.remove('selected');
+                    }
+                });
+            }
+
+            paintStars(currentSelectedRating);
+
+            stars.forEach(star => {
+                star.addEventListener('mouseenter', () => {
+                    const hoverValue = parseInt(star.getAttribute('data-value'));
+                    paintStars(hoverValue);
+                });
+
+                star.addEventListener('click', () => {
+                    currentSelectedRating = parseInt(star.getAttribute('data-value'));
+                    ratingInput.value = currentSelectedRating;
+                    paintStars(currentSelectedRating);
+                });
+            });
+
+            starsContainer.addEventListener('mouseleave', () => {
+                paintStars(currentSelectedRating);
+            });
+
         });
     </script>
 

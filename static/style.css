@@ -302,28 +302,29 @@ input[type="text"]:focus, textarea:focus {
     background-color: rgb(110, 35, 35);
 }
 
-/* Styling for the HTML dropdown selection menu */
-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d1c7bd;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-family: inherit;
-    background-color: #faf9f6;
-    color: rgb(54, 43, 40);
-    cursor: pointer;
-}
-
-select:focus {
-    outline: none;
-    border-color: rgb(141, 46, 46);
-    box-shadow: 0 0 0 3px rgba(141, 46, 46, 0.15);
-}
-
-/* Margin offset for star icons on our library dashboard cards */
-.star-display {
+/* ==========================================================================
+   8. INTERACTIVE STAR RATING FIELD (Goodreads Style)
+   ========================================================================== */
+.star-rating {
+    display: flex;
+    gap: 6px;
     margin-top: 4px;
-    font-size: 0.95rem;
-    letter-spacing: 2px;
+}
+
+.interactive-star {
+    font-size: 2.2rem;
+    color: #e0d7cd; /* Default unfilled color */
+    cursor: pointer;
+    transition: color 0.1s ease-in-out, transform 0.1s ease;
+    user-select: none;
+    line-height: 1;
+}
+
+.interactive-star:hover {
+    transform: scale(1.15); /* Subtle pop behavior on hover */
+}
+
+/* JavaScript toggles this class dynamically to light up stars from left to right */
+.interactive-star.selected {
+    color: rgb(190, 143, 83); /* Classic library gold accent */
 }
