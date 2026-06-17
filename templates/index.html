@@ -60,7 +60,7 @@
             
             {% if recommendations %}
             <div class="card recommendations-container">
-                <h2>📜 Your Personalized Recommendations</h2>
+                <h2>You Should Read...</h2>
                 <div class="rec-html-content">
                     {{ recommendations | safe }}
                 </div>
@@ -74,7 +74,7 @@
                         <div class="card book-card">
                             <div class="book-header">
                                 <div>
-                                    <h3>✩ {{ book['title'] }}</h3>
+                                    <h3>📖 {{ book['title'] }}</h3>
                                     <span class="book-author">by {{ book['author'] }}</span>
                                     
                                     <div class="star-display">
