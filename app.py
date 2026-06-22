@@ -1,9 +1,13 @@
+import os
 import sqlite3
 from flask import Flask, redirect, render_template, request
+from dotenv import load_dotenv
 from google import genai
 
 app = Flask(__name__)
 
+# upload key from .env file
+load_dotenv()
 
 def get_db_connection():
     conn = sqlite3.connect("books.db")
@@ -91,10 +95,19 @@ def recommend_books():
 
     # UPDATED: Instruct the AI to care deeply about the numerical values
     master_prompt = (
-        "You are an elite literary critic. Based on my reading history, my 1-5 star ratings, and why I liked each book, "
-        "recommend 3 distinct books I should read next. Heavily prioritize elements from 5-star books, and treat lower-rated books with less emphasis. "
-        "Format your output using clean HTML elements like <p>, <strong>, <ul>, and <li> so it integrates seamlessly into a webpage. "
-        "Do NOT wrap your response in markdown code blocks (like ```html), just output the raw HTML markup text.\n\n"
+        "You are a friendly, knowledgeable book assistant. Look at my reading history and ratings "
+        "to recommend 5 distinct books I should read next. Heavily prioritize elements from high-rated books.\n\n"
+        
+        "CRITICAL INSTRUCTIONS:\n"
+        "1. Do NOT include any introductory or concluding remarks about being a critic, your expertise, "
+        "or analyzing my tapestry/palate. Just jump straight into the recommendations using an <h2> tag for the section title.\n"
+        "2. You MUST format each of the 3 book recommendations using this exact HTML structure:\n"
+        "   <h3>[Book Title]</h3>\n"
+        "   <p><strong>Author:</strong> [Author Name]</p>\n"
+        "   <p><strong>Blurb:</strong> [A brief summary of what the book is about]</p>\n"
+        "   <p><strong>Why you will like it:</strong> [A personalized sentence explaining why it fits their history/rating]</p>\n\n"
+        
+        "Do NOT wrap your response in markdown code blocks (like ```html), just output the raw HTML markup.\n\n"
         "Here is my reading history:\n"
     )
 
