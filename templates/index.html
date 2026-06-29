@@ -59,9 +59,14 @@
         <main class="main-content">
             
             {% if recommendations %}
-            <div class="card recommendations-container">
-                <h2>You Should Read...</h2>
-                <div class="rec-html-content">
+            <div class="recommendations-container" id="ai-recommendations-wrapper">
+                
+                <div class="ai-title-row">
+                    <h2>You Should Read...</h2>
+                    <button id="close-rec-btn" onclick="hideRecommendations()">Hide</button>
+                </div>
+
+                <div class="ai-content-body">
                     {{ recommendations | safe }}
                 </div>
             </div>
@@ -178,7 +183,13 @@
                 paintStars(currentSelectedRating);
             });
 
-        });
+            function hideRecommendations() {
+                // Locate the container on the page
+                var section = document.getElementById("ai-recommendations-wrapper");
+                
+                // Instantly collapse and hide it from sight
+                section.style.display = "none";
+            });
     </script>
 
 </body>

@@ -5,7 +5,7 @@
    ========================================================================== */
 body {
     font-family: 'Google Sans';
-    background-color: rgb(247, 241, 227);
+    background-color: #F7F4EB;
     color: rgb(54, 43, 40);
     margin: 0;
     padding: 0;
@@ -21,7 +21,7 @@ h1, h2, h3 {
    2. HERO BANNER
    ========================================================================== */
 .hero-image {
-    background-image: url("images/darkred.png");
+    background-image: url("images/libraryheader.jpg");
     height: 280px;
     background-position: center;
     background-repeat: no-repeat;
@@ -98,7 +98,7 @@ input[type="text"], textarea {
 
 input[type="text"]:focus, textarea:focus {
     outline: none;
-    border-color: rgb(141, 46, 46);
+    border-color: #6B2D33;
     box-shadow: 0 0 0 3px rgba(141, 46, 46, 0.15);
 }
 
@@ -125,12 +125,12 @@ input[type="text"]:focus, textarea:focus {
 }
 
 .btn-primary {
-    background-color: rgb(141, 46, 46);
+    background-color: #6B2D33;
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: rgb(110, 35, 35);
+    background-color: #6B2D33;
 }
 
 .btn-secondary {
@@ -149,7 +149,7 @@ input[type="text"]:focus, textarea:focus {
 /* Custom AI Container - Now matching your theme */
 .recommendations-container {
     background: rgb(253, 250, 242); /* Softer parchment tone instead of harsh blue */
-    border-left: 6px solid rgb(190, 143, 83); /* Classic library gold accent */
+    border-left: 6px solid #6B2D33; /* Classic library gold accent */
 }
 
 .rec-html-content ul {
@@ -162,7 +162,7 @@ input[type="text"]:focus, textarea:focus {
 
 /* Reading History Cards */
 .book-card {
-    border-left: 6px solid rgb(141, 46, 46);
+    border-left: 6px solid #6B2D33;
 }
 
 .book-header {
@@ -329,4 +329,73 @@ input[type="text"]:focus, textarea:focus {
 /* JavaScript toggles this class dynamically to light up stars from left to right */
 .interactive-star.selected {
     color: rgb(190, 143, 83); /* Classic library gold accent */
+}
+
+/* ==========================================================================
+   9. AI RECOMMENDED BOOK CARDS WITH COVERS
+   ========================================================================== */
+.rec-book-card {
+    display: flex;
+    gap: 20px;
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    align-items: flex-start;
+}
+
+.rec-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover; /* Keeps the book proportions perfect without squishing */
+    border-radius: 4px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+    background-color: #f5f5f5; /* Fallback background if a cover loads slowly */
+}
+
+.rec-details {
+    flex: 1; /* Allows text to fill the remaining horizontal space */
+}
+
+.rec-details h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+/* Make it responsive: Stack vertically on small mobile screens */
+@media (max-width: 600px) {
+    .rec-book-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+/* Container to sit the header and the button side-by-side */
+.ai-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Elegant Burgundy Outline Style */
+#close-rec-btn {
+    background-color: transparent;
+    border: 1px solid #6B2D33; /* Matches your primary accent */
+    color: #6B2D33;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Smooth inverse color animation on hover */
+#close-rec-btn:hover {
+    background-color: #6B2D33;
+    color: #ffffff;
 }
