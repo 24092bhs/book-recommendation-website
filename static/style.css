@@ -144,22 +144,110 @@ input[type="text"]:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   6. OUTPUT COMPONENTS
+   6. OUTPUT COMPONENTS (AI RECOMMENDATIONS FIX)
    ========================================================================== */
-/* Custom AI Container - Now matching your theme */
+
+/* The Main Parchment Box Container */
 .recommendations-container {
-    background: rgb(253, 250, 242); /* Softer parchment tone instead of harsh blue */
-    border-left: 6px solid #6B2D33; /* Classic library gold accent */
+    background: rgb(253, 250, 242); 
+    border-left: 6px solid #6B2D33;   /* Your signature burgundy accent */
+    padding: 25px;                  /* Gives the content plenty of room to breathe */
+    border-radius: 8px;             /* Smooths out the harsh sharp corners */
+    margin-top: 30px;               /* Pushes it safely away from components above */
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Adds a premium, soft layer depth */
 }
 
-.rec-html-content ul {
-    padding-left: 20px;
+/* Header & Hide Button Row Alignment */
+.ai-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    border-bottom: 1px solid rgba(107, 45, 51, 0.15); /* Elegant divider line */
+    padding-bottom: 12px;
 }
 
-.rec-html-content li {
-    margin-bottom: 10px;
+.ai-title-row h2 {
+    margin: 0;
+    color: #2C2523;                 /* Deep espresso tone */
+    font-size: 1.6rem;
+    font-weight: 700;
 }
 
+/* Beautiful White Recommendation Cards on Parchment Background */
+.rec-book-card {
+    display: flex;
+    gap: 20px;
+    background: #ffffff;            /* Pure white stands out beautifully on parchment */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    align-items: flex-start;
+    border: 1px solid rgba(74, 59, 50, 0.08); /* Extremely soft outer frame */
+}
+
+/* Prevents an extra blank space gap after the final book card */
+.rec-book-card:last-child {
+    margin-bottom: 0;
+}
+
+/* Book Cover Sizing */
+.rec-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.12);
+    background-color: #fcfcfc;
+}
+
+/* Details Typography */
+.rec-details {
+    flex: 1;
+}
+
+.rec-details h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #6B2D33;                 /* Book titles stand out in Burgundy */
+    font-size: 1.3rem;
+}
+
+.rec-details p {
+    margin: 6px 0;
+    color: #4A3B32;                 /* Soft dark brown for easy reading */
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Clean UI Style for the Hide Button */
+#close-rec-btn {
+    background-color: transparent;
+    border: 1px solid #6B2D33;
+    color: #6B2D33;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#close-rec-btn:hover {
+    background-color: #6B2D33;
+    color: #ffffff;
+}
+
+/* Responsive Mobile Layout Fix */
+@media (max-width: 600px) {
+    .rec-book-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
 /* Reading History Cards */
 .book-card {
     border-left: 6px solid #6B2D33;
@@ -362,40 +450,4 @@ input[type="text"]:focus, textarea:focus {
     margin-top: 0;
     margin-bottom: 8px;
     color: #2c3e50;
-}
-
-/* Make it responsive: Stack vertically on small mobile screens */
-@media (max-width: 600px) {
-    .rec-book-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-}
-
-/* Container to sit the header and the button side-by-side */
-.ai-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-/* Elegant Burgundy Outline Style */
-#close-rec-btn {
-    background-color: transparent;
-    border: 1px solid #6B2D33; /* Matches your primary accent */
-    color: #6B2D33;
-    padding: 6px 14px;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
-
-/* Smooth inverse color animation on hover */
-#close-rec-btn:hover {
-    background-color: #6B2D33;
-    color: #ffffff;
 }
