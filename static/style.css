@@ -29,7 +29,7 @@ h1, h2, h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2); /* Subtle dark overlay for readability */
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2); /* Subtle dark overlay */
 }
 
 .hero-text {
@@ -42,18 +42,19 @@ h1, h2, h3 {
 }
 
 /* ==========================================================================
-   3. THE GRID LAYOUT (The Secret Sauce)
+   3. THE GRID LAYOUT (WIDER SCREEN LAYOUT)
    ========================================================================== */
 .page-container {
-    max-width: 1100px; /* Widened slightly to accommodate two columns comfortably */
-    margin: 40px auto;
-    padding: 0 20px;
+    max-width: 1350px; /* Bumping width to eliminate side whitespace */
+    width: 94%;        /* Reduces empty margin space on widescreen displays */
+    margin: 0 auto;    /* Keeps layout centered */
+    padding: 25px 0;
     display: grid;
-    grid-template-columns: 320px 1fr; /* Sidebar is fixed, main content takes remaining space */
-    gap: 40px;
+    grid-template-columns: 300px 1fr; /* Compact sidebar, max space for content */
+    gap: 30px;
 }
 
-/* Responsive design: switches back to a single column on tablets/phones */
+/* Responsive design: switches back to single column on tablet/mobile */
 @media (max-width: 850px) {
     .page-container {
         grid-template-columns: 1fr;
@@ -130,13 +131,13 @@ input[type="text"]:focus, textarea:focus {
 }
 
 .btn-primary:hover {
-    background-color: #6B2D33;
+    background-color: #542328;
 }
 
 .btn-secondary {
     background-color: rgb(64, 53, 50);
     color: white;
-    margin-top: -10px; /* Snugs it closer up to the card above */
+    margin-top: -10px;
 }
 
 .btn-secondary:hover {
@@ -144,56 +145,53 @@ input[type="text"]:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   6. OUTPUT COMPONENTS (AI RECOMMENDATIONS FIX)
+   6. OUTPUT COMPONENTS & AI RECOMMENDATIONS
    ========================================================================== */
 
-/* The Main Parchment Box Container */
+/* Main Parchment Box Container */
 .recommendations-container {
     background: rgb(253, 250, 242); 
-    border-left: 6px solid #6B2D33;   /* Your signature burgundy accent */
-    padding: 25px;                  /* Gives the content plenty of room to breathe */
-    border-radius: 8px;             /* Smooths out the harsh sharp corners */
-    margin-top: 30px;               /* Pushes it safely away from components above */
+    border-left: 6px solid #6B2D33;
+    padding: 25px;
+    border-radius: 8px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Adds a premium, soft layer depth */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Header & Hide Button Row Alignment */
+/* Header & Toggle Button Alignment */
 .ai-title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 22px;
-    border-bottom: 1px solid rgba(107, 45, 51, 0.15); /* Elegant divider line */
+    border-bottom: 1px solid rgba(107, 45, 51, 0.15);
     padding-bottom: 12px;
 }
 
 .ai-title-row h2 {
     margin: 0;
-    color: #2C2523;                 /* Deep espresso tone */
+    color: #2C2523;
     font-size: 1.6rem;
     font-weight: 700;
 }
 
-/* Beautiful White Recommendation Cards on Parchment Background */
+/* Recommendation Book Cards */
 .rec-book-card {
     display: flex;
     gap: 20px;
-    background: #ffffff;            /* Pure white stands out beautifully on parchment */
+    background: #ffffff;
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     align-items: flex-start;
-    border: 1px solid rgba(74, 59, 50, 0.08); /* Extremely soft outer frame */
+    border: 1px solid rgba(74, 59, 50, 0.08);
 }
 
-/* Prevents an extra blank space gap after the final book card */
 .rec-book-card:last-child {
     margin-bottom: 0;
 }
 
-/* Book Cover Sizing */
 .rec-cover {
     width: 100px;
     height: 150px;
@@ -201,9 +199,9 @@ input[type="text"]:focus, textarea:focus {
     border-radius: 4px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.12);
     background-color: #fcfcfc;
+    flex-shrink: 0;
 }
 
-/* Details Typography */
 .rec-details {
     flex: 1;
 }
@@ -211,18 +209,18 @@ input[type="text"]:focus, textarea:focus {
 .rec-details h3 {
     margin-top: 0;
     margin-bottom: 8px;
-    color: #6B2D33;                 /* Book titles stand out in Burgundy */
+    color: #6B2D33;
     font-size: 1.3rem;
 }
 
 .rec-details p {
     margin: 6px 0;
-    color: #4A3B32;                 /* Soft dark brown for easy reading */
+    color: #4A3B32;
     font-size: 0.95rem;
     line-height: 1.5;
 }
 
-/* Clean UI Style for the Hide Button */
+/* Clean Hide/Show Button */
 #close-rec-btn {
     background-color: transparent;
     border: 1px solid #6B2D33;
@@ -240,7 +238,7 @@ input[type="text"]:focus, textarea:focus {
     color: #ffffff;
 }
 
-/* Responsive Mobile Layout Fix */
+/* Mobile Layout Fix for Book Cards */
 @media (max-width: 600px) {
     .rec-book-card {
         flex-direction: column;
@@ -248,6 +246,7 @@ input[type="text"]:focus, textarea:focus {
         text-align: center;
     }
 }
+
 /* Reading History Cards */
 .book-card {
     border-left: 6px solid #6B2D33;
@@ -286,7 +285,7 @@ input[type="text"]:focus, textarea:focus {
     border-radius: 8px;
 }
 
-/* Red warning button for clearing history */
+/* Danger Button for Clearing History */
 .btn-danger {
     background-color: transparent;
     color: #c0392b;
@@ -298,7 +297,6 @@ input[type="text"]:focus, textarea:focus {
     color: #962d22;
 }
 
-/* Minimalist trash icon button inside the book header */
 .delete-icon-btn {
     background: none;
     border: none;
@@ -316,7 +314,7 @@ input[type="text"]:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   7. CUSTOM CONFIRMATION MODAL STYLING
+   7. CUSTOM CONFIRMATION MODAL
    ========================================================================== */
 .modal-overlay {
     position: fixed;
@@ -324,17 +322,16 @@ input[type="text"]:focus, textarea:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(44, 33, 30, 0.6); /* Translucent dark brown overlay */
+    background-color: rgba(44, 33, 30, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Ensures it sits above all other website elements */
+    z-index: 9999;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
 }
 
-/* Added by JavaScript when form is clicked */
 .modal-overlay.active {
     opacity: 1;
     pointer-events: auto;
@@ -349,7 +346,7 @@ input[type="text"]:focus, textarea:focus {
     box-shadow: 0 10px 30px rgba(54, 43, 40, 0.25);
     text-align: center;
     transform: scale(0.85);
-    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Slight bounce animation */
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .modal-overlay.active .modal-card {
@@ -373,7 +370,6 @@ input[type="text"]:focus, textarea:focus {
     gap: 15px;
 }
 
-/* Custom layout behaviors for popup option buttons */
 #modal-cancel-btn {
     background-color: #f0eae1;
     color: rgb(54, 43, 40);
@@ -393,7 +389,7 @@ input[type="text"]:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   8. INTERACTIVE STAR RATING FIELD (Goodreads Style)
+   8. INTERACTIVE STAR RATING FIELD
    ========================================================================== */
 .star-rating {
     display: flex;
@@ -403,7 +399,7 @@ input[type="text"]:focus, textarea:focus {
 
 .interactive-star {
     font-size: 2.2rem;
-    color: #e0d7cd; /* Default unfilled color */
+    color: #e0d7cd;
     cursor: pointer;
     transition: color 0.1s ease-in-out, transform 0.1s ease;
     user-select: none;
@@ -411,43 +407,9 @@ input[type="text"]:focus, textarea:focus {
 }
 
 .interactive-star:hover {
-    transform: scale(1.15); /* Subtle pop behavior on hover */
+    transform: scale(1.15);
 }
 
-/* JavaScript toggles this class dynamically to light up stars from left to right */
 .interactive-star.selected {
-    color: rgb(190, 143, 83); /* Classic library gold accent */
-}
-
-/* ==========================================================================
-   9. AI RECOMMENDED BOOK CARDS WITH COVERS
-   ========================================================================== */
-.rec-book-card {
-    display: flex;
-    gap: 20px;
-    background: #fff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    align-items: flex-start;
-}
-
-.rec-cover {
-    width: 100px;
-    height: 150px;
-    object-fit: cover; /* Keeps the book proportions perfect without squishing */
-    border-radius: 4px;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
-    background-color: #f5f5f5; /* Fallback background if a cover loads slowly */
-}
-
-.rec-details {
-    flex: 1; /* Allows text to fill the remaining horizontal space */
-}
-
-.rec-details h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    color: #2c3e50;
+    color: rgb(190, 143, 83);
 }
