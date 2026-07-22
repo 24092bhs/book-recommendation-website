@@ -54,23 +54,8 @@
                 <button type="submit" class="btn btn-danger">🗑️ Clear Entire History</button>
             </form>
             {% endif %}
-        </aside>
 
-        <main class="main-content">
-            
-            {% if recommendations %}
-           <div class="recommendations-container">
-                <div class="ai-title-row">
-                    <h2>You Should Read...</h2>
-                    <button id="close-rec-btn" onclick="toggleRecommendations()">Hide</button>
-                </div>
-
-                <div id="ai-recommendations-content">
-                    {{ recommendations | safe }}
-                </div>
-            </div>
-            {% endif %}
-
+        
             <div class="history-section">
                 <h2>My Reading History</h2>
                 <div id="book-list">
@@ -96,7 +81,22 @@
                     {% endfor %}
                 </div>
             </div>
+        </aside>
 
+        <main class="main-content">
+            
+            {% if recommendations %}
+           <div class="recommendations-container">
+                <div class="ai-title-row">
+                    <h2>You Should Read...</h2>
+                    <button id="close-rec-btn" onclick="toggleRecommendations()">Hide</button>
+                </div>
+
+                <div id="ai-recommendations-content">
+                    {{ recommendations | safe }}
+                </div>
+            </div>
+            {% endif %}
         </main>
     </div>
 

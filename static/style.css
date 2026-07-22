@@ -50,7 +50,7 @@ h1, h2, h3 {
     margin: 0 auto;    /* Keeps layout centered */
     padding: 25px 0;
     display: grid;
-    grid-template-columns: 300px 1fr; /* Compact sidebar, max space for content */
+    grid-template-columns: 400px 1fr; /* Compact sidebar, max space for content */
     gap: 30px;
 }
 
@@ -283,6 +283,18 @@ input[type="text"]:focus, textarea:focus {
     padding: 40px;
     background: white;
     border-radius: 8px;
+}
+
+/* Gives nice breathing room above the Reading History header */
+.history-section h2, 
+.sidebar-column h2 {
+    margin-top: 28px;
+    margin-bottom: 16px;
+}
+
+/* Ensures the red button doesn't hug anything beneath it */
+.btn-danger {
+    margin-bottom: 25px;
 }
 
 /* Danger Button for Clearing History */
