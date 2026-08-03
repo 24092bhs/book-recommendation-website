@@ -1,4 +1,6 @@
+# imports sqlite for the database
 import sqlite3
+# imports flask 
 from flask import Flask, redirect, render_template, request
 from dotenv import load_dotenv
 from google import genai
@@ -93,7 +95,7 @@ def recommend_books():
             recommendations="<p>Please add a few books to your history first so I can analyze your taste!</p>",
         )
 
-    # UPDATED: Instruct the AI to care deeply about the numerical values
+    # UPDATED: Prompt to get recommendations from the AI
     master_prompt = (
         "You are a friendly, knowledgeable book assistant. Look at my reading history and ratings "
         "to recommend 5 niche/distinct books I should read next. Heavily prioritize elements from high-rated books.\n\n"
@@ -117,15 +119,19 @@ def recommend_books():
     )
 
     for book in all_books:
-        # UPDATED: Pushing ratings straight into the AI's training prompt context
+        # Adds the books the readers inputted to the master prompt so the AI knows what they like
         master_prompt += f"- '{book['title']}' by {book['author']}. My personal rating: {book['rating']}/5 stars. Why I liked it: {book['notes']}\n"
 
     try:
+        # Checks if there is an API key
         client = genai.Client()
+        # Sends through the request to the AI
         response = client.models.generate_content(
             model="gemini-2.5-flash", contents=master_prompt
         )
+        # Assigns the response to a variable
         ai_analysis = response.text
+    # If there is an API error, it sends an error message
     except Exception as e:
         ai_analysis = (
             f"<p style='color: #e74c3c;'><strong>API Connection Error:</strong> {e}<br>"

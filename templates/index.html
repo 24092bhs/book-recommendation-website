@@ -8,25 +8,29 @@
 </head>
 <body>
 
+    <!-- Hero Image -->
     <section class="hero-image">
         <h1 class="hero-text">Recommend Me A Book</h1>
     </section>
 
     <div class="page-container">
-        
+        <!-- Book Form -->
         <aside class="sidebar">
             <div class="card form-container">
                 <h3>Add a Book You Loved</h3>
                 <form action="/add" method="POST">
+                    <!-- Book Title Section -->
                     <div class="form-group">
                         <label for="title">Book Title</label>
                         <input type="text" id="title" name="title" required placeholder="e.g. 1984">
                     </div>
+                    <!-- Book Author Section -->
                     <div class="form-group">
                         <label for="author">Author</label>
                         <input type="text" id="author" name="author" required placeholder="e.g. George Orwell">
                     </div>
                     
+                    <!-- Star Rating Section -->
                     <div class="form-group">
                         <label>Your Rating</label>
                         <div class="star-rating" id="interactive-stars">
@@ -39,6 +43,7 @@
                         </div>
                     </div>
 
+                    <!-- Opinion section of the form -->
                     <div class="form-group">
                         <label for="notes">What did you think of it?</label>
                         <textarea id="notes" name="notes" rows="3" required placeholder="Incredible world-building..."></textarea>
@@ -49,13 +54,14 @@
 
             <a href="/recommend" class="btn btn-secondary">Generate AI Suggestions</a>
 
+            <!-- Checks if the user has stored books, if yes, sets up the delete history button -->
             {% if books %}
             <form action="/clear" method="POST" class="confirm-required" data-message="Are you sure you want to completely clear your history? This will delete all your entries permanently.">
                 <button type="submit" class="btn btn-danger">🗑️ Clear Entire History</button>
             </form>
             {% endif %}
 
-        
+        <!-- Reading History Section -->
             <div class="history-section">
                 <h2>My Reading History</h2>
                 <div id="book-list">
@@ -83,6 +89,7 @@
             </div>
         </aside>
 
+        <!-- Checks if the user has generated recommendations and sets up the wireframe for CSS :P -->
         <main class="main-content">
             
             {% if recommendations %}
@@ -100,6 +107,7 @@
         </main>
     </div>
 
+    <!-- Deleting popup thing -->
     <div id="confirm-modal" class="modal-overlay">
         <div class="modal-card">
             <h3>⚠️ Hold On</h3>
@@ -112,33 +120,45 @@
     </div>
 
     <script>
+    // Makes sure the Javascript doesn't display until the HTML is loaded
     document.addEventListener('DOMContentLoaded', () => {
         
         // 1. Modal pop-up code
+        // Grabs references to the container, text box, cancel button, and confirm button
         const modal = document.getElementById('confirm-modal');
         const modalMessage = document.getElementById('modal-message');
         const cancelBtn = document.getElementById('modal-cancel-btn');
         const confirmBtn = document.getElementById('modal-confirm-btn');
+        // A variable that records what forms are clicked
         let activeForm = null;
 
+        // Form submissions
         document.querySelectorAll('.confirm-required').forEach(form => {
             form.addEventListener('submit', (event) => {
+                // Stops the form from closing right away
                 event.preventDefault();
+                // Stores the form opened as the activeForm so it knows what form to submit
                 activeForm = form;
+                // Pulls the confirmation message from HTML before submitting
                 const message = form.getAttribute('data-message') || "Are you sure?";
-                modalMessage.textContent = message;
+                modalMessage.textContent = message;\
+                // Adds a popup from CSS on top of the webpage
                 modal.classList.add('active');
             });
         });
 
+        // Calls the function for clearing history, as well as for deleting a book
         cancelBtn.addEventListener('click', closeModal);
+        // If someone clicks outside of the popup, calls the function for closing the popup
         modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
+        // Function for hiding the popup
         function closeModal() {
             modal.classList.remove('active');
             activeForm = null;
         }
 
+        // If the "submit" button is clicked, it finds the form and sends it through to the backend (flask?)
         confirmBtn.addEventListener('click', () => {
             if (activeForm) {
                 activeForm.submit();
@@ -147,11 +167,14 @@
 
 
         // 2. Star rating code
+        // Groups all the stars - finds the physical stars, selects all 5 of them, and gets the hidden rating score so that it can submit the form.
         const starsContainer = document.getElementById('interactive-stars');
         const stars = document.querySelectorAll('.interactive-star');
         const ratingInput = document.getElementById('rating-score');
-        let currentSelectedRating = 5; 
+        // Tracks how many stars are filled at any given moment/when the user hovers over it. Starts at 0 stars filled.
+        let currentSelectedRating = 0; 
 
+        // Colours the stars. Goes through each star and compares if the stars coloured is equivalent to the written rating. If not, it changes the colours of the stars to match.
         function paintStars(ratingValue) {
             stars.forEach(star => {
                 const starValue = parseInt(star.getAttribute('data-value'));
@@ -166,11 +189,13 @@
         paintStars(currentSelectedRating);
 
         stars.forEach(star => {
+            // Changes the colour of the stars when the mouse hovers over it
             star.addEventListener('mouseenter', () => {
                 const hoverValue = parseInt(star.getAttribute('data-value'));
                 paintStars(hoverValue);
             });
 
+            // When the stars are clicked, the new value is stored
             star.addEventListener('click', () => {
                 currentSelectedRating = parseInt(star.getAttribute('data-value'));
                 ratingInput.value = currentSelectedRating;
@@ -178,16 +203,16 @@
             });
         });
 
+        // if the user stops hovering over a star, the animation defaults to whatever was saved last
         starsContainer.addEventListener('mouseleave', () => {
             paintStars(currentSelectedRating);
         });
 
-    }); /* <-- This closes DOMContentLoaded. Nothing inside here can be seen by HTML onclick attributes! */
+    });
 
-
-    // 3. GLOBAL SCOPE: This is now sitting out in the open where your HTML button can find it!
-    // THE UPGRADED TOGGLE FUNCTION
+    // FUNCTION TO HIDE AND SHOW THE AI BOX
     function toggleRecommendations() {
+        // Stores the AI recommendations box and the hide button in variables
         var content = document.getElementById("ai-recommendations-content");
         var btn = document.getElementById("close-rec-btn");
         
