@@ -33,16 +33,15 @@
                     <!-- Star Rating Section -->
                     <div class="form-group">
                         <label>Your Rating</label>
-                        <div class="star-rating" id="interactive-stars">
+                        <div id="interactive-stars" class="star-rating">
                             <span class="interactive-star" data-value="1">★</span>
                             <span class="interactive-star" data-value="2">★</span>
                             <span class="interactive-star" data-value="3">★</span>
                             <span class="interactive-star" data-value="4">★</span>
                             <span class="interactive-star" data-value="5">★</span>
-                            <input type="hidden" id="rating-score" name="rating" value="5" required>
                         </div>
+                        <input type="hidden" id="rating-score" name="rating" value="0">
                     </div>
-
                     <!-- Opinion section of the form -->
                     <div class="form-group">
                         <label for="notes">What did you think of it?</label>
@@ -141,7 +140,7 @@
                 activeForm = form;
                 // Pulls the confirmation message from HTML before submitting
                 const message = form.getAttribute('data-message') || "Are you sure?";
-                modalMessage.textContent = message;\
+                modalMessage.textContent = message;
                 // Adds a popup from CSS on top of the webpage
                 modal.classList.add('active');
             });
