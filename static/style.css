@@ -440,16 +440,27 @@ input[type="text"]:focus, textarea:focus {
 /* ==========================================================================
    9. ALREADY READ BUTTON
    ========================================================================== */
+/* Left Column for Cover + Button */
+.rec-left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px; /* Matches cover width */
+    flex-shrink: 0;
+}
 
+/* Updated Button Style */
 .mark-read-btn {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-    margin-top: 8px;
+    width: 100%; /* Spans full width of the 100px cover */
+    font-size: 0.75rem;
+    padding: 6px 4px;
+    margin-top: 10px;
     cursor: pointer;
-    background-color: #6B2D33; /* Burgundy matching theme */
+    background-color: #6B2D33;
     color: #FDFAF2;
     border: none;
     border-radius: 6px;
+    text-align: center;
     transition: background-color 0.2s ease;
 }
 
