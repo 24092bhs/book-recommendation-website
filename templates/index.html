@@ -120,61 +120,45 @@
     </div>
 
     <script>
-    // Makes sure the Javascript doesn't display until the HTML is loaded
     document.addEventListener('DOMContentLoaded', () => {
         
         // 1. Modal pop-up code
-        // Grabs references to the container, text box, cancel button, and confirm button
         const modal = document.getElementById('confirm-modal');
         const modalMessage = document.getElementById('modal-message');
         const cancelBtn = document.getElementById('modal-cancel-btn');
         const confirmBtn = document.getElementById('modal-confirm-btn');
-        // A variable that records what forms are clicked
         let activeForm = null;
 
-        // Form submissions
         document.querySelectorAll('.confirm-required').forEach(form => {
             form.addEventListener('submit', (event) => {
-                // Stops the form from closing right away
                 event.preventDefault();
-                // Stores the form opened as the activeForm so it knows what form to submit
                 activeForm = form;
-                // Pulls the confirmation message from HTML before submitting
                 const message = form.getAttribute('data-message') || "Are you sure?";
                 modalMessage.textContent = message;
-                // Adds a popup from CSS on top of the webpage
                 modal.classList.add('active');
             });
         });
 
-        // Calls the function for clearing history, as well as for deleting a book
         cancelBtn.addEventListener('click', closeModal);
-        // If someone clicks outside of the popup, calls the function for closing the popup
         modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-        // Function for hiding the popup
         function closeModal() {
             modal.classList.remove('active');
             activeForm = null;
         }
 
-        // If the "submit" button is clicked, it finds the form and sends it through to the backend (flask?)
         confirmBtn.addEventListener('click', () => {
             if (activeForm) {
                 activeForm.submit();
             }
         });
 
-
         // 2. Star rating code
-        // Groups all the stars - finds the physical stars, selects all 5 of them, and gets the hidden rating score so that it can submit the form.
         const starsContainer = document.getElementById('interactive-stars');
         const stars = document.querySelectorAll('.interactive-star');
         const ratingInput = document.getElementById('rating-score');
-        // Tracks how many stars are filled at any given moment/when the user hovers over it. Starts at 0 stars filled.
         let currentSelectedRating = 0; 
 
-        // Colours the stars. Goes through each star and compares if the stars coloured is equivalent to the written rating. If not, it changes the colours of the stars to match.
         function paintStars(ratingValue) {
             stars.forEach(star => {
                 const starValue = parseInt(star.getAttribute('data-value'));
@@ -189,13 +173,11 @@
         paintStars(currentSelectedRating);
 
         stars.forEach(star => {
-            // Changes the colour of the stars when the mouse hovers over it
             star.addEventListener('mouseenter', () => {
                 const hoverValue = parseInt(star.getAttribute('data-value'));
                 paintStars(hoverValue);
             });
 
-            // When the stars are clicked, the new value is stored
             star.addEventListener('click', () => {
                 currentSelectedRating = parseInt(star.getAttribute('data-value'));
                 ratingInput.value = currentSelectedRating;
@@ -203,26 +185,50 @@
             });
         });
 
-        // if the user stops hovering over a star, the animation defaults to whatever was saved last
         starsContainer.addEventListener('mouseleave', () => {
             paintStars(currentSelectedRating);
         });
 
+        // 3. "Already Read" Quick Pre-fill (Event Delegation)
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.mark-read-btn');
+            if (btn) {
+                const title = btn.getAttribute('data-title');
+                const author = btn.getAttribute('data-author');
+
+                const titleInput = document.getElementById('title');
+                const authorInput = document.getElementById('author');
+
+                if (titleInput && authorInput) {
+                    titleInput.value = title;
+                    authorInput.value = author;
+
+                    // Set default 5-star rating if none is selected yet
+                    if (currentSelectedRating === 0) {
+                        currentSelectedRating = 5;
+                        ratingInput.value = 5;
+                        paintStars(5);
+                    }
+
+                    // Smooth scroll to sidebar form & focus on notes input
+                    titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    const notesInput = document.getElementById('notes');
+                    if (notesInput) notesInput.focus();
+                }
+            }
+        });
+
     });
 
-    // FUNCTION TO HIDE AND SHOW THE AI BOX
+    // Function to hide and show the AI recommendations container
     function toggleRecommendations() {
-        // Stores the AI recommendations box and the hide button in variables
         var content = document.getElementById("ai-recommendations-content");
         var btn = document.getElementById("close-rec-btn");
         
-        // If the books are hidden, reveal them and change button to "Hide"
         if (content.style.display === "none") {
             content.style.display = "block";
             btn.textContent = "Hide";
-        } 
-        // If the books are visible, collapse them and change button to "Show"
-        else {
+        } else {
             content.style.display = "none";
             btn.textContent = "Show";
         }

@@ -111,6 +111,7 @@ def recommend_books():
         "           <p><strong>Author:</strong> [Author Name]</p>\n"
         "           <p><strong>Blurb:</strong> [A brief summary of what the book is about]</p>\n"
         "           <p><strong>Why you will like it:</strong> [A personalized sentence explaining why it fits their history/rating]</p>\n"
+        "           <button class=\"mark-read-btn\" data-title=\"[Book Title]\" data-author=\"[Author Name]\">✓ Already Read</button>\n"
         "       </div>\n"
         "   </div>\n\n"
         

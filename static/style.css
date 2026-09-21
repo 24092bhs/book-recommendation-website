@@ -436,3 +436,23 @@ input[type="text"]:focus, textarea:focus {
 .interactive-star.selected {
     color: rgb(190, 143, 83);
 }
+
+/* ==========================================================================
+   9. ALREADY READ BUTTON
+   ========================================================================== */
+
+.mark-read-btn {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    margin-top: 8px;
+    cursor: pointer;
+    background-color: #6B2D33; /* Burgundy matching theme */
+    color: #FDFAF2;
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mark-read-btn:hover {
+    background-color: #522227;
+}
