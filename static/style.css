@@ -153,7 +153,7 @@ input[type="text"]:focus, textarea:focus {
 .btn-secondary {
     background-color: rgb(64, 53, 50);
     color: white;
-    margin-top: -10px;
+    margin-top: 15px;
 }
 
 .btn-secondary:hover {
@@ -168,7 +168,7 @@ input[type="text"]:focus, textarea:focus {
 .recommendations-container {
     background: rgb(253, 250, 242); 
     border-left: 6px solid #6B2D33;
-    padding: 25px;
+    padding: 27px;
     border-radius: 8px;
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -315,14 +315,14 @@ input[type="text"]:focus, textarea:focus {
 
 /* Danger Button for Clearing History */
 .btn-danger {
-    background-color: transparent;
-    color: #c0392b;
-    border: 1px solid #e74c3c;
+    background-color: #6B2D33;
+    color: #ffffff;
+    margin-top: 4px;
 }
 
 .btn-danger:hover {
-    background-color: #fff0f0;
-    color: #962d22;
+    background-color: #542328;
+    color: #ffffff;
 }
 
 .delete-icon-btn {
@@ -509,4 +509,52 @@ input[type="text"]:focus, textarea:focus {
         left: 5%;
         min-width: auto;
     }
+}
+
+/* ==========================================================================
+   11. LOADING OVERLAY & SPINNER
+   ========================================================================== */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 33, 30, 0.65);
+    backdrop-filter: blur(3px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f0eae1;
+    border-top: 5px solid #6B2D33; /* Theme burgundy */
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+.loading-overlay p {
+    color: #FDFAF2;
+    margin-top: 18px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

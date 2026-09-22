@@ -15,7 +15,7 @@
     </section>
 
     <div class="page-container">
-        <!-- Book Form -->
+        <!-- Book Form Sidebar -->
         <aside class="sidebar">
             <div class="card form-container">
                 <h3>Add a Book You Loved</h3>
@@ -52,16 +52,17 @@
                 </form>
             </div>
 
-            <a href="/recommend" class="btn btn-secondary">Generate AI Suggestions</a>
+            <!-- AI Recommendation Link with ID for Loading Screen -->
+            <a href="/recommend" id="generate-rec-btn" class="btn btn-secondary">Generate AI Suggestions</a>
 
-            <!-- Checks if the user has stored books, if yes, sets up the delete history button -->
+            <!-- Clear history button -->
             {% if books %}
             <form action="/clear" method="POST" class="confirm-required" data-message="Are you sure you want to completely clear your history? This will delete all your entries permanently.">
                 <button type="submit" class="btn btn-danger">🗑️ Clear Entire History</button>
             </form>
             {% endif %}
 
-        <!-- Reading History Section -->
+            <!-- Reading History Section -->
             <div class="history-section">
                 <h2>My Reading History</h2>
                 <div id="book-list">
@@ -89,11 +90,10 @@
             </div>
         </aside>
 
-        <!-- Checks if the user has generated recommendations and sets up the wireframe for CSS :P -->
+        <!-- Main Content Area for Recommendations -->
         <main class="main-content">
-            
             {% if recommendations %}
-           <div class="recommendations-container">
+            <div class="recommendations-container">
                 <div class="ai-title-row">
                     <h2>You Should Read...</h2>
                     <button id="close-rec-btn" onclick="toggleRecommendations()">Hide</button>
@@ -107,7 +107,7 @@
         </main>
     </div>
 
-    <!-- Deleting popup thing -->
+    <!-- Confirmation Modal -->
     <div id="confirm-modal" class="modal-overlay">
         <div class="modal-card">
             <h3>⚠️ Hold On</h3>
@@ -118,6 +118,15 @@
             </div>
         </div>
     </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Curating your recommendations...</p>
+    </div>
+
+    <!-- Toast Pop-up Notification -->
+    <div id="toast" class="toast"></div>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -224,6 +233,16 @@
                 }
             }
         });
+
+        // 4. Show loading overlay when clicking "Generate AI Suggestions"
+        const generateBtn = document.getElementById('generate-rec-btn');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        if (generateBtn && loadingOverlay) {
+            generateBtn.addEventListener('click', () => {
+                loadingOverlay.classList.add('active');
+            });
+        }
     });
 
     // Helper function to trigger pop-up notification
@@ -253,10 +272,7 @@
             btn.textContent = "Show";
         }
     }
-</script>
-
-<!-- Toast Pop-up Notification -->
-<div id="toast" class="toast"></div>
+    </script>
 
 </body>
 </html>
