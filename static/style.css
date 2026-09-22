@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
 
 /* ==========================================================================
-   1. GLOBAL STYLES & TYPOGRAPHY
+   GLOBAL STYLING
    ========================================================================== */
+/* styling for the entire page*/
 body {
     font-family: 'Google Sans';
     background-color: #F7F4EB;
@@ -12,13 +13,14 @@ body {
     line-height: 1.6;
 }
 
+/* styling for headings 1, 2, and 3 */
 h1, h2, h3 {
     color: rgb(44, 33, 30);
     margin-top: 0;
 }
 
 /* ==========================================================================
-   2. HERO BANNER
+   HERO BANNER
    ========================================================================== */
 .hero-image {
     background-image: url("images/libraryheader.jpg");
@@ -33,6 +35,7 @@ h1, h2, h3 {
     box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2);
 }
 
+/* 'Recommend Me A Book' */
 .hero-text {
     color: white;
     font-size: 3.5rem;
@@ -41,6 +44,7 @@ h1, h2, h3 {
     margin: 0;
 }
 
+/* 'Powered by Gemini' */
 .hero-subtext {
     color: #ffffff;
     font-size: 1.2rem;
@@ -55,6 +59,7 @@ h1, h2, h3 {
 /* ==========================================================================
    3. THE GRID LAYOUT (WIDER SCREEN LAYOUT)
    ========================================================================== */
+/* Container for all of the content */
 .page-container {
     max-width: 1350px; /* Bumping width to eliminate side whitespace */
     width: 94%;        /* Reduces empty margin space on widescreen displays */
@@ -466,4 +471,42 @@ input[type="text"]:focus, textarea:focus {
 
 .mark-read-btn:hover {
     background-color: #522227;
+}
+
+/* ==========================================================================
+   10. TOAST NOTIFICATION
+   ========================================================================== */
+.toast {
+    visibility: hidden;
+    min-width: 280px;
+    background-color: #6B2D33;
+    color: #FDFAF2;
+    text-align: center;
+    border-radius: 8px;
+    padding: 14px 20px;
+    position: fixed;
+    z-index: 10000;
+    bottom: 30px;
+    right: 30px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile alignment fix */
+@media (max-width: 600px) {
+    .toast {
+        right: 5%;
+        left: 5%;
+        min-width: auto;
+    }
 }

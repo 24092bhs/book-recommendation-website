@@ -134,24 +134,26 @@
                 event.preventDefault();
                 activeForm = form;
                 const message = form.getAttribute('data-message') || "Are you sure?";
-                modalMessage.textContent = message;
-                modal.classList.add('active');
+                if (modalMessage) modalMessage.textContent = message;
+                if (modal) modal.classList.add('active');
             });
         });
 
-        cancelBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
         function closeModal() {
-            modal.classList.remove('active');
+            if (modal) modal.classList.remove('active');
             activeForm = null;
         }
 
-        confirmBtn.addEventListener('click', () => {
-            if (activeForm) {
-                activeForm.submit();
-            }
-        });
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', () => {
+                if (activeForm) {
+                    activeForm.submit();
+                }
+            });
+        }
 
         // 2. Star rating code
         const starsContainer = document.getElementById('interactive-stars');
@@ -180,16 +182,18 @@
 
             star.addEventListener('click', () => {
                 currentSelectedRating = parseInt(star.getAttribute('data-value'));
-                ratingInput.value = currentSelectedRating;
+                if (ratingInput) ratingInput.value = currentSelectedRating;
                 paintStars(currentSelectedRating);
             });
         });
 
-        starsContainer.addEventListener('mouseleave', () => {
-            paintStars(currentSelectedRating);
-        });
+        if (starsContainer) {
+            starsContainer.addEventListener('mouseleave', () => {
+                paintStars(currentSelectedRating);
+            });
+        }
 
-        // 3. "Already Read" Quick Pre-fill (Event Delegation)
+        // 3. "Already Read" Quick Pre-fill + Toast Notification
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.mark-read-btn');
             if (btn) {
@@ -203,10 +207,10 @@
                     titleInput.value = title;
                     authorInput.value = author;
 
-                    // Set default 5-star rating if none is selected yet
+                    // Set default 5-star rating if none selected yet
                     if (currentSelectedRating === 0) {
                         currentSelectedRating = 5;
-                        ratingInput.value = 5;
+                        if (ratingInput) ratingInput.value = 5;
                         paintStars(5);
                     }
 
@@ -214,16 +218,32 @@
                     titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     const notesInput = document.getElementById('notes');
                     if (notesInput) notesInput.focus();
+
+                    // Trigger toast pop-up
+                    showToast(`"${title}" added to sidebar! Please fill in your notes to save.`);
                 }
             }
         });
-
     });
+
+    // Helper function to trigger pop-up notification
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('show');
+        
+        // Automatically hide after 3.5 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3500);
+    }
 
     // Function to hide and show the AI recommendations container
     function toggleRecommendations() {
         var content = document.getElementById("ai-recommendations-content");
         var btn = document.getElementById("close-rec-btn");
+        if (!content || !btn) return;
         
         if (content.style.display === "none") {
             content.style.display = "block";
@@ -234,6 +254,9 @@
         }
     }
 </script>
+
+<!-- Toast Pop-up Notification -->
+<div id="toast" class="toast"></div>
 
 </body>
 </html>
