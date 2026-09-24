@@ -70,7 +70,7 @@ h1, h2, h3 {
     gap: 30px;
 }
 
-/* Responsive design: switches back to single column on tablet/mobile */
+/* switches back to single column on tablet/mobile */
 @media (max-width: 850px) {
     .page-container {
         grid-template-columns: 1fr;
