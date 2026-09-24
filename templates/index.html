@@ -16,9 +16,11 @@
 
     <div class="page-container">
         <!-- Book Form Sidebar -->
+         <!-- aside = sidebar -->
         <aside class="sidebar">
             <div class="card form-container">
                 <h3>Add a Book You Loved</h3>
+                <!-- takes all of the inputs, converts it into key-value pairs, and then sends it to the backend to store in a database -->
                 <form action="/add" method="POST">
                     <!-- Book Title Section -->
                     <div class="form-group">
@@ -129,33 +131,46 @@
     <div id="toast" class="toast"></div>
 
     <script>
+    // tells the computer to wait for all of the HTML to load before starting the javascript
     document.addEventListener('DOMContentLoaded', () => {
         
-        // 1. Modal pop-up code
+        // 1. Pop-up code to confirm deleting things - applies to all of the pop-ups
+        // finds the HTML elements by its ID
         const modal = document.getElementById('confirm-modal');
         const modalMessage = document.getElementById('modal-message');
         const cancelBtn = document.getElementById('modal-cancel-btn');
         const confirmBtn = document.getElementById('modal-confirm-btn');
+        // keeps track of what form the user wants to modify
         let activeForm = null;
 
+        // finds all of the forms with the class confirm-required -- ensures that the forms have to be submitted
         document.querySelectorAll('.confirm-required').forEach(form => {
             form.addEventListener('submit', (event) => {
+                // stops the browser's default behaviour (submitting the form immediately and refreshing)
                 event.preventDefault();
+                // assigns the form the person is completing to the variable 'activeForm'
                 activeForm = form;
+                // gets the specific confirmation message for each action - if unavailable, displays the text: 'Are you sure?'
                 const message = form.getAttribute('data-message') || "Are you sure?";
+                // if there is a message provided, then it places the text inside of the popup box
                 if (modalMessage) modalMessage.textContent = message;
+                // active changes the visibility of the popup box, changing the display from display:none to display: flex
                 if (modal) modal.classList.add('active');
             });
         });
 
+        // checks if there is a cancel button; if there is, it "listens" for a click, and then calls the closeModal function, which closes the popup
         if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+        // if the user clicks on the dark background (outside of the popup), then it also calls the closeModal function
         if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
+        // function that closes the popup - if the modal is active, it reverses it. resets the pending form variable.
         function closeModal() {
             if (modal) modal.classList.remove('active');
             activeForm = null;
         }
 
+        // other option -- the browser "listens" for a click, and if there is one, then the pending form is submitted/deleted
         if (confirmBtn) {
             confirmBtn.addEventListener('click', () => {
                 if (activeForm) {
@@ -165,94 +180,124 @@
         }
 
         // 2. Star rating code
+        // finds the element holding the 5 stars and stores it in the variable 'starsContainer'
         const starsContainer = document.getElementById('interactive-stars');
+        // finds all of the elements called 'interactive stars' and stores it in the variable 'stars'
         const stars = document.querySelectorAll('.interactive-star');
+        // finds the element that stores the rating of the book
         const ratingInput = document.getElementById('rating-score');
+        // sets the rating to 0
         let currentSelectedRating = 0; 
 
+        // function that paints the stars
         function paintStars(ratingValue) {
+            // for each star, find the value that is assigned to it, and turn it into an integer
             stars.forEach(star => {
                 const starValue = parseInt(star.getAttribute('data-value'));
+                // checks if the value of the star is less than or equal to the rating number; if yes, colour in the star
                 if (starValue <= ratingValue) {
                     star.classList.add('selected');
+                // if not, don't colour in the star/remove the colour
                 } else {
                     star.classList.remove('selected');
                 }
             });
         }
 
+        // calls the function so that the stars aren't coloured when the page loads
         paintStars(currentSelectedRating);
 
+        // for each star, "listen" to if the user hovers over it, and if it does, get its assigned value
         stars.forEach(star => {
             star.addEventListener('mouseenter', () => {
                 const hoverValue = parseInt(star.getAttribute('data-value'));
+                // lights up all stars up to the hovered one
                 paintStars(hoverValue);
             });
 
+            // listens for when the user clicks on a star
             star.addEventListener('click', () => {
+                // updates the selected rating to the value of the one that was clicked
                 currentSelectedRating = parseInt(star.getAttribute('data-value'));
+                // if the rating input has already been set, change it to the newly clicked one
                 if (ratingInput) ratingInput.value = currentSelectedRating;
                 paintStars(currentSelectedRating);
             });
         });
 
+        // checks if the star container is on the page, and if it is, set the coloured stars to what the current updated rating is
         if (starsContainer) {
             starsContainer.addEventListener('mouseleave', () => {
                 paintStars(currentSelectedRating);
             });
         }
 
-        // 3. "Already Read" Quick Pre-fill + Toast Notification
-        document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.mark-read-btn');
+        // 3. "Already Read" Quick Pre-fill + Popup
+        // listens for a click and captures it in the variable event
+        document.addEventListener('click', (event) => {
+            // checks if the clicked element has the class mark-read-btn and saves it to the variable btn
+            const btn = event.target.closest('.mark-read-btn');
+            // if something has been clicked, it reads the data title and author and saves it to the variables 'title' and 'author'
             if (btn) {
                 const title = btn.getAttribute('data-title');
                 const author = btn.getAttribute('data-author');
 
+                // finds the text input to put the title and author
                 const titleInput = document.getElementById('title');
                 const authorInput = document.getElementById('author');
 
+                // checks that both the fields exists
                 if (titleInput && authorInput) {
                     titleInput.value = title;
                     authorInput.value = author;
 
-                    // Set default 5-star rating if none selected yet
+                    // Sets default 5-star rating if nothing is selected yet
                     if (currentSelectedRating === 0) {
                         currentSelectedRating = 5;
+                        // sets the hidden value in the data form to 5
                         if (ratingInput) ratingInput.value = 5;
+                        // colours the 5 stars
                         paintStars(5);
                     }
 
-                    // Smooth scroll to sidebar form & focus on notes input
+                    // Scrolls to the form so that the user can fill it in
                     titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // finds the text field that corresponds to the user's notes
                     const notesInput = document.getElementById('notes');
+                    // puts the blinking text thing into the notes box so the user can start typing
                     if (notesInput) notesInput.focus();
 
-                    // Trigger toast pop-up
+                    // Triggers the popup/makes it visible
                     showToast(`"${title}" added to sidebar! Please fill in your notes to save.`);
                 }
             }
         });
 
-        // 4. Show loading overlay when clicking "Generate AI Suggestions"
+        // 4. Shows loading overlay when clicking "Generate AI Suggestions"
+        // finds the 'generate recommendations' button and assigns it a variable
         const generateBtn = document.getElementById('generate-rec-btn');
+        // finds the loading screen and assigns it to a variable
         const loadingOverlay = document.getElementById('loading-overlay');
 
+        // if both the button and the loading overlay is present, then it listens for if the user clicks the generation button
         if (generateBtn && loadingOverlay) {
             generateBtn.addEventListener('click', () => {
+                // when the button is clicked, then the loading overlay is made visible
                 loadingOverlay.classList.add('active');
             });
         }
     });
 
-    // Helper function to trigger pop-up notification
+    // Function to trigger pop-up notification
     function showToast(message) {
+        //gets the 'toast' element and assigns it to a variable
         const toast = document.getElementById('toast');
+        // if there is a toast element, it gets the message for the popup, and makes the popup visible
         if (!toast) return;
         toast.textContent = message;
         toast.classList.add('show');
         
-        // Automatically hide after 3.5 seconds
+        // Automatically hides after 3.5 seconds
         setTimeout(() => {
             toast.classList.remove('show');
         }, 3500);
@@ -260,13 +305,17 @@
 
     // Function to hide and show the AI recommendations container
     function toggleRecommendations() {
+        // finds the HTML element that holds the AI recommendations and assigns it to a variable
         var content = document.getElementById("ai-recommendations-content");
+        // finds the 'hide' button
         var btn = document.getElementById("close-rec-btn");
+        // if the content and button variables are on the page
         if (!content || !btn) return;
-        
+        // if the recommendations box is in view, then it hides it
         if (content.style.display === "none") {
             content.style.display = "block";
             btn.textContent = "Hide";
+        // otherwise, it makes it visible again
         } else {
             content.style.display = "none";
             btn.textContent = "Show";

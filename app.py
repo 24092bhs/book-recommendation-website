@@ -10,7 +10,7 @@ app = Flask(__name__)
 # upload key from .env file
 load_dotenv()
 
-
+# connection to sqlite
 def get_db_connection():
     conn = sqlite3.connect("books.db")
     conn.row_factory = sqlite3.Row
@@ -141,6 +141,7 @@ def recommend_books():
             "Make sure you have obtained a Gemini API Key and set it up in your system environment variables!</p>"
         )
 
+# styling template for the page
     return render_template(
         "index.html", books=all_books, recommendations=ai_analysis
     )
